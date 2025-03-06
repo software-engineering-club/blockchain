@@ -80,7 +80,7 @@ func (h *Handler) MineBlock(w http.ResponseWriter, r *http.Request) {
 		h.StatusesRWLock.Lock()
 		h.MiningStatuses[id] = MineStatusResponse{Status: StatusPending}
 		h.StatusesRWLock.Unlock()
-		err := h.Blockchain.MinePendingTransactions("")
+		block, err := h.Blockchain.MinePendingTransactions("")
 		if err != nil {
 			h.StatusesRWLock.Lock()
 			h.MiningStatuses[id] = MineStatusResponse{
@@ -88,9 +88,11 @@ func (h *Handler) MineBlock(w http.ResponseWriter, r *http.Request) {
 				Details: fmt.Sprintf("Error: %v", err),
 			}
 			h.StatusesRWLock.Unlock()
+			return
 		}
 		h.StatusesRWLock.Lock()
 		h.MiningStatuses[id] = MineStatusResponse{Status: StatusSuccessful}
+		go h.Node.BroadcastBlock(block)
 		h.StatusesRWLock.Unlock()
 	}()
 	err := json.NewEncoder(w).Encode(MineResponse{Id: id.String()})
