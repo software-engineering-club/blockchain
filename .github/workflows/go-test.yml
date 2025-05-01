@@ -14,7 +14,7 @@ jobs:
       with:
         go-version: '1.22'
     - name: Run unit tests with coverage
-      run: go test -v -coverprofile=coverage.out ./...
+      run: go test -race -v -coverprofile=coverage.out ./...
     - name: Display coverage
       run: go tool cover -func=coverage.out
     - name: Upload coverage report

@@ -108,6 +108,7 @@ func TestBlock_CalculateHash(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+		        t.Parallel()
 			b := &Block{
 				Transactions: tt.fields.Transactions,
 				Timestamp:    tt.fields.Timestamp,
@@ -248,6 +249,7 @@ func TestBlock_MineBlock(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+		        t.Parallel()
 			b := &Block{
 				Transactions: tt.fields.Transactions,
 				Timestamp:    tt.fields.Timestamp,
@@ -332,6 +334,7 @@ func TestTransaction_Sign(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+		        t.Parallel()
 			tr := &Transaction{
 				FromAddress:   tt.fields.FromAddress,
 				ToAddress:     tt.fields.ToAddress,
@@ -459,6 +462,7 @@ func TestTransaction_IsValid(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+		        t.Parallel()
 			if got := tt.transaction.IsValid(); got != tt.wantValid {
 				t.Errorf("Transaction.IsValid() = %v, want %v", got, tt.wantValid)
 			}
@@ -583,6 +587,7 @@ func TestTransaction_verifySignature(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+		        t.Parallel()
 			gotValid, err := tt.transaction.verifySignature()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Transaction.verifySignature() error = %v, wantErr %v", err, tt.wantErr)
@@ -634,6 +639,7 @@ func TestNewTransaction(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+		        t.Parallel()
 			got, err := NewTransaction(tt.privateKey, tt.fromAddress, tt.toAddress, tt.amount)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewTransaction() error = %v, wantErr %v", err, tt.wantErr)
@@ -725,6 +731,7 @@ func TestBlockchain_AddBlock(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+		        t.Parallel()
 			initialCount := len(chain.Blocks)
 			chain.AddBlock(tt.block)
 
@@ -798,6 +805,7 @@ func TestBlockchain_AddTransactionToPool(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+		        t.Parallel()
 			err := chain.AddTransactionToPool(tt.transaction)
 
 			if (err != nil) != tt.wantErr {
@@ -875,6 +883,7 @@ func TestBlockchain_GetBalance(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+		        t.Parallel()
 			got := chain.GetBalance(tt.address)
 			if got != tt.want {
 				t.Errorf("Blockchain.GetBalance() = %v, want %v", got, tt.want)
